@@ -36,4 +36,13 @@ class ProductTest < ActiveSupport::TestCase
 		assert !product.save
 		assert_equal 'has already been taken', product.errors[:title].join('; ')
 	end
+
+	test 'product is not valid if title is not at least ten characters long' do
+		product = Product.new(title: products(:scala).title,
+															description: 'yyy',
+															price: 1,
+															image_url: 'blah.jpg')
+		assert !product.save
+		assert_equal 'is too short (minimum is 10 characters)', product.errors[:title][1]
+	end
 end
